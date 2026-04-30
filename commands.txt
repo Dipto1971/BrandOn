@@ -1,0 +1,13 @@
+# Unit tests only
+npx jest --selectProjects unit
+
+# Integration tests only
+npx jest --selectProjects integration
+
+# System tests only
+npx jest --selectProjects system
+
+# Regression tests only
+npx jest --selectProjects regression
+
+npx jest __tests__/pricing.test.ts

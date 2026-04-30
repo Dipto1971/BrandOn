@@ -1,0 +1,112 @@
+// BrandON - Custom Banner Printing Platform
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+// Banner material (e.g. Star Flex, Vinyl, PVC, Backlit)
+model Material {
+  id           String   @id @default(cuid())
+  name         String   @unique
+  description  String?  @db.Text
+  pricePerSqFt Float
+  imageUrl     String?
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  orders Order[]
+
+  @@map("materials")
+}
+
+// Customer order — no login required
+model Order {
+  id          String @id @default(cuid())
+  orderNumber String @unique @default(cuid())
+
+  // Customer info (collected in order form)
+  customerName    String
+  customerPhone   String
+  customerEmail   String?
+  customerAddress String? @db.Text
+
+  // Material & sizing
+  materialId String
+  material   Material @relation(fields: [materialId], references: [id])
+  widthFt    Float
+  heightFt   Float
+  quantity   Int     @default(1)
+  totalPrice Float
+
+  // Design
+  designFileUrl String?
+  specialNotes  String? @db.Text
+  finishingOptions String?
+
+  // Status
+  status    OrderStatus @default(PENDING)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+
+  @@map("orders")
+}
+
+// Portfolio / gallery
+model GalleryItem {
+  id          String   @id @default(cuid())
+  title       String
+  description String?  @db.Text
+  imageUrl    String
+  category    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("gallery_items")
+}
+
+// Single-row company info
+model CompanyProfile {
+  id             String  @id @default(cuid())
+  companyName    String  @default("BrandON")
+  tagline        String?
+  about          String? @db.Text
+  location       String?
+  phone          String?
+  email          String?
+  whatsappNumber String?
+  facebookUrl    String?
+  instagramUrl   String?
+  businessHours  String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@map("company_profile")
+}
+
+// Contact form submissions
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String?
+  phone     String
+  message   String   @db.Text
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("contact_messages")
+}
