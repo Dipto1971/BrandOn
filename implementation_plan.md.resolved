@@ -1,0 +1,111 @@
+# CSE495 IT Project Management Report Plan for BrandON
+
+This plan outlines the strategy to transition the BrandON project documentation from a Software Engineering (CSE412) context to an IT Project Management (CSE495) context, fully enriched with all technical details from the original report.
+
+## Goal Description
+The objective is to rewrite the BrandON project report with a strict focus on project management lifecycles (Initiating, Planning, Executing, Monitoring and Controlling, Closing) while seamlessly incorporating all the deep technical context (COCOMO estimates, design patterns, testing metrics) from the CSE412 report. The tone must be professional, use simple English, and avoid "AI-sounding" buzzwords.
+
+## Report Structure Strategy
+
+### 1. Initiating
+- **Focus**: Business justification and initial scope.
+- **Components to Generate**: 
+  - **Project Charter**: High-level overview, objectives, stakeholders (Client, Admin, Customers), constraints.
+  - **PESTEL Analysis**: Analyzing the local print shop market (Political, Economic, Social, Technological, Environmental, Legal).
+  - **Porter's Five Forces**: Competitive landscape of local vs. online printing services.
+  - **Business Canvas Model**: Value proposition, revenue streams (Cash on Delivery), key partnerships (RedX, Pathao).
+
+### 2. Planning
+- **Focus**: Detailed scheduling and budgeting.
+- **Components to Generate**: 
+  - **WBS (Work Breakdown Structure)**: Hierarchical breakdown of tasks.
+  - **Cost \& Effort Estimation**: Incorporate the CSE412 COCOMO data (3.02 KLOC, 106 Function Points, 7.73 person-months effort, 5.6 months duration) into the management planning. Include the $2k-$3k MVP budget.
+  - **Product Backlog**: High-level features (e.g., US-1 to US-15).
+  - **Sprint Backlog**: Breakdown of Sprints 1-10.
+
+### 3. Executing
+- **Focus**: Work performance and resource management.
+- **Components to Generate**: Detail the team's execution strategy. Emphasize how technical architectural decisions (like Singleton for DB connections and Strategy pattern for Pricing) were managed by the team.
+
+### 4. Monitoring and Controlling
+- **Focus**: Quality assurance and scope management.
+- **Components to Generate**: Testing metrics integration (133 tests across Unit, Integration, System, Regression passing in 2.381s), QA validation, status pipeline management (PENDING $\to$ CONFIRMED $\to$ IN_PROGRESS $\to$ COMPLETED).
+
+### 5. Closing
+- **Focus**: Project handover and retrospective.
+- **Components to Generate**: Deployment (Docker Compose), client handover, final evaluations.
+
+---
+
+## The Prompt for Claude
+Once this plan is approved, you should copy the prompt below and paste it into Claude to generate the LaTeX code in your new CSE495 directory.
+
+```text
+Please write a comprehensive academic report in LaTeX for a course named "CSE495: IT Project Management". The report should be written in clean, compilable LaTeX code with a professional, structured layout. 
+
+**CRITICAL STYLE GUIDELINES:**
+- Use simple, easy-to-understand professional English.
+- Avoid flowery or overly dramatic "AI-like" language (e.g., avoid words like "delve", "testament", "tapestry", "realm", "crucial", "embark", "meticulous"). 
+- Keep sentences short, active, and direct.
+- Present information in a highly structured way using lists, tables, and clear headings.
+
+**PROJECT CONTEXT:**
+- Project Name: BrandON (Digital Advertising Agency Platform)
+- Purpose: A web-based platform digitalizing local banner and signboard printing shops. Customers can order custom sizes, get dynamic pricing, and upload design files. Admins manage products, prices, and an order pipeline.
+- Budget: 2000 - 3000 BDT/USD (MVP).
+- Tech Stack: Next.js 14, TypeScript, Tailwind CSS, Prisma, PostgreSQL, Docker.
+- Delivery Partners: RedX, Pathao.
+
+**TEAM MEMBERS:**
+- Mahir Faysal Haque Dipto 
+- Mahamudur Rahaman Maharaj
+- Nusrat Jahan Oishi
+- Mahamudul Hasan Hamim
+- Israt Jahan Sarker
+
+**DEEP TECHNICAL DIRECTIVES (Must be incorporated into the management context):**
+- **Estimations**: The project size is exactly 3.02 KLOC with 106 Function Points. Using the COCOMO Organic model, the estimated effort was 7.73 person-months with a duration of 5.6 months. Ensure these figures are placed in the Cost/Effort Estimation section.
+- **Design Patterns**: The team successfully executed two major design patterns: the Singleton pattern (for Prisma database connections to avoid exhausting Postgres limits during Next.js hot reloads) and the Strategy pattern (for 3 pricing tiers: Standard, Bulk [10% off for qty >= 5], and Rush [+25% surcharge]).
+- **QA & Testing**: The project has a rigorous 4-level Jest testing architecture (Unit, Integration, System, Regression) with exactly 133 tests passing flawlessly in 2.381 seconds. Mention this heavily in the Monitoring & Controlling section as a measure of strict QA.
+- **Architecture & Security**: The RBAC is managed via a single `admin_token` cookie enforced entirely through Next.js middleware.
+- **Order Pipeline**: Orders strictly follow: PENDING $\to$ CONFIRMED $\to$ IN_PROGRESS $\to$ COMPLETED. Client-side price tampering is blocked by enforcing server-side recalculation.
+
+**REQUIRED REPORT STRUCTURE (5 Main Sections):**
+
+1. **Initiating**
+   - Project Charter (include Objective, Scope, Stakeholders).
+   - PESTEL Analysis (for local printing business transitioning to digital).
+   - Porter's Five Forces.
+   - Business Canvas Model (format this as a readable table or itemized list in LaTeX).
+
+2. **Planning**
+   - WBS Diagram Description (create a hierarchical text or tree-like table representation of the Work Breakdown Structure).
+   - Cost Estimation Table (itemize costs to fit the 2k-3k budget) and Software Estimation Data (COCOMO numbers).
+   - Product Backlog (List key features).
+   - Sprint Backlog (Group the product backlog into 3-4 conceptual sprints).
+
+3. **Executing**
+   - Describe the team's development strategy. Explain how the team handled the learning curve of Next.js and Docker, and how work was distributed among Mahir, Maharaj, Oishi, Hamim, and Israt. 
+   - Note the implementation of the Singleton and Strategy design patterns as part of the execution phase.
+
+4. **Monitoring and Controlling**
+   - Explain how the team monitored progress.
+   - Describe quality control measures: test metrics (133 Jest tests), order pipeline enforcement, server-side price validation, and mobile responsiveness checks.
+
+5. **Closing**
+   - Final product deployment (Docker Compose).
+   - Handover plan to the client.
+   - Final project summary.
+
+**LATEX REQUIREMENTS:**
+- Use the `article` or `report` document class.
+- Include a title page with the University name (East West University), Course (CSE495: IT Project Management), Team Members, and Project Title.
+- Include a Table of Contents.
+- Use `tabular` or `tabularx` environments for the Estimations, Backlogs, and Business Canvas Model.
+- Ensure all LaTeX code is properly escaped and ready to compile without errors.
+- Please output ONLY the LaTeX code inside a single code block.
+```
+
+## User Review Required
+> [!IMPORTANT]
+> The prompt has been heavily updated with all the specifics extracted from the CSE412 report (KLOC, COCOMO estimates, the 133 Jest tests, Singleton & Strategy patterns, the strict order pipeline). Please review the updated plan!

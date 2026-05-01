@@ -1,0 +1,1157 @@
+\documentclass[12pt,a4paper]{report}
+
+% ─── Packages ───────────────────────────────────────────────────────────────
+\usepackage[margin=1in]{geometry}
+\usepackage{titlesec}
+\usepackage{titletoc}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{setspace}
+\usepackage{parskip}
+\usepackage{multirow}
+\usepackage{amsmath}
+\usepackage{tikz}
+\usetikzlibrary{trees}
+\usepackage{forest}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{lmodern}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+
+% ─── Colors ──────────────────────────────────────────────────────────────────
+\definecolor{primaryblue}{RGB}{0, 70, 127}
+\definecolor{lightgray}{RGB}{245, 245, 245}
+\definecolor{darkgray}{RGB}{80, 80, 80}
+\definecolor{accentorange}{RGB}{220, 100, 0}
+
+% ─── Hyperref Setup ──────────────────────────────────────────────────────────
+\hypersetup{
+    colorlinks=true,
+    linkcolor=primaryblue,
+    urlcolor=accentorange,
+    citecolor=darkgray,
+    pdftitle={BrandON Project Report},
+    pdfauthor={CSE495 Team},
+}
+
+% ─── Section Title Formatting ────────────────────────────────────────────────
+\titleformat{\chapter}[display]
+  {\normalfont\huge\bfseries\color{primaryblue}}
+  {\chaptertitlename\ \thechapter}{20pt}{\Huge}
+
+\titleformat{\section}
+  {\normalfont\Large\bfseries\color{primaryblue}}
+  {\thesection}{1em}{}
+
+\titleformat{\subsection}
+  {\normalfont\large\bfseries\color{darkgray}}
+  {\thesubsection}{1em}{}
+
+\titleformat{\subsubsection}
+  {\normalfont\normalsize\bfseries}
+  {\thesubsubsection}{1em}{}
+
+% ─── Header / Footer ─────────────────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textcolor{darkgray}{BrandON --- IT Project Management Report}}
+\fancyhead[R]{\small\textcolor{darkgray}{CSE495 | East West University}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% ─── Table Column Types ──────────────────────────────────────────────────────
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\arraybackslash}p{#1}}
+
+% ─── Spacing ─────────────────────────────────────────────────────────────────
+\onehalfspacing
+
+% ════════════════════════════════════════════════════════════════════════════
+\begin{document}
+
+% ─── Title Page ──────────────────────────────────────────────────────────────
+\begin{titlepage}
+  \centering
+  \vspace*{1cm}
+
+  {\Large\textbf{East West University}}\\[0.3cm]
+  {\large Department of Computer Science \& Engineering}\\[0.2cm]
+  \rule{\linewidth}{0.5pt}
+
+  \vspace{1.5cm}
+
+  {\LARGE\textbf{\textcolor{primaryblue}{CSE495: IT Project Management}}}\\[0.4cm]
+  {\large\textit{Project Report}}
+
+  \vspace{1.5cm}
+
+  \begin{tikzpicture}
+    \draw[primaryblue, line width=2pt] (0,0) rectangle (10,4);
+    \node at (5,2) {\Huge\textbf{\textcolor{primaryblue}{BrandON}}};
+    \node at (5,0.8) {\large\textcolor{darkgray}{Digital Advertising Agency Platform}};
+  \end{tikzpicture}
+
+  \vspace{1.5cm}
+
+  {\large\textbf{Project Team}}\\[0.5cm]
+  \begin{tabular}{ll}
+    \toprule
+    \textbf{Name} & \textbf{Role} \\
+    \midrule
+    Mahir Faysal Haque Dipto   & Lead Developer / Project Manager \\
+    Mahamudur Rahaman Maharaj  & Backend Developer \\
+    Nusrat Jahan Oishi         & Frontend Developer \\
+    Mahamudul Hasan Hamim      & QA Engineer / Tester \\
+    Israt Jahan Sarker         & UI/UX Designer / Documentation \\
+    \bottomrule
+  \end{tabular}
+
+  \vfill
+
+  \rule{\linewidth}{0.5pt}\\[0.3cm]
+  {\large Semester: Spring 2025 \quad | \quad Date of Submission: May 2025}
+
+\end{titlepage}
+
+% ─── Table of Contents ───────────────────────────────────────────────────────
+\tableofcontents
+\newpage
+
+% ════════════════════════════════════════════════════════════════════════════
+%  EXECUTIVE SUMMARY
+% ════════════════════════════════════════════════════════════════════════════
+\chapter*{Executive Summary}
+\addcontentsline{toc}{chapter}{Executive Summary}
+
+BrandON is a web-based platform that connects customers with local banner and signboard printing shops. The platform lets customers place orders online, upload design files, choose custom sizes, and receive instant price quotes. Admins manage products, pricing tiers, and an order fulfillment pipeline.
+
+The project was built using a modern stack: Next.js 14, TypeScript, Tailwind CSS, Prisma ORM, and PostgreSQL 15, all containerized with Docker. The team delivered an MVP within a budget of 2,000--3,000 BDT, over roughly 5.6 months of effort.
+
+Key outcomes:
+\begin{itemize}
+  \item Fully functional web platform with customer, agent, and admin roles.
+  \item Dynamic pricing with three strategy tiers (Standard, Bulk, Rush).
+  \item Strict four-state order pipeline: \texttt{PENDING} $\to$ \texttt{CONFIRMED} $\to$ \texttt{IN\_PROGRESS} $\to$ \texttt{COMPLETED}.
+  \item 133 automated Jest tests passing in 2.381 seconds.
+  \item Docker Compose deployment for consistent environments.
+\end{itemize}
+
+% ════════════════════════════════════════════════════════════════════════════
+%  CHAPTER 1 — INITIATING
+% ════════════════════════════════════════════════════════════════════════════
+\chapter{Initiating}
+
+% ─── 1.1 Project Charter ─────────────────────────────────────────────────────
+\section{Project Charter}
+
+\subsection{Project Overview}
+
+\begin{table}[H]
+  \centering
+  \caption{Project Charter Summary}
+  \begin{tabularx}{\textwidth}{L{3.5cm} X}
+    \toprule
+    \textbf{Field} & \textbf{Details} \\
+    \midrule
+    Project Name    & BrandON --- Digital Advertising Agency Platform \\
+    Project Type    & Software Development (Web Application --- MVP) \\
+    Course          & CSE495: IT Project Management \\
+    Institution     & East West University \\
+    Start Date      & January 2025 \\
+    End Date        & May 2025 \\
+    Budget          & 2,000--3,000 BDT (MVP) \\
+    Project Manager & Mahir Faysal Haque Dipto \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\subsection{Objective}
+
+The objective of BrandON is to digitalize the order workflow of local printing shops in Bangladesh. The platform replaces manual, walk-in based ordering with a web interface where customers can:
+\begin{itemize}
+  \item Browse available banner and signboard products.
+  \item Configure custom dimensions and quantities.
+  \item Upload design files for printing.
+  \item Receive dynamically calculated prices.
+  \item Track their orders through a defined pipeline.
+\end{itemize}
+
+Admins can manage the product catalog, pricing rules, and order statuses from a protected dashboard.
+
+\subsection{Project Scope}
+
+\textbf{In Scope:}
+\begin{itemize}
+  \item Customer registration, login, and profile management.
+  \item Product catalog with dynamic pricing (Standard, Bulk, Rush tiers).
+  \item Order placement with file upload support.
+  \item Admin dashboard for product and order management.
+  \item Role-based access control (RBAC): ADMIN, AGENT, CUSTOMER.
+  \item Four-stage order pipeline with status tracking.
+  \item Integration with RedX and Pathao for delivery.
+  \item Docker-based deployment.
+\end{itemize}
+
+\textbf{Out of Scope (Post-MVP):}
+\begin{itemize}
+  \item Mobile application (Android/iOS).
+  \item Online payment gateway integration.
+  \item Real-time delivery tracking.
+  \item Multi-vendor support.
+  \item AI-based design generation.
+\end{itemize}
+
+\subsection{Stakeholders}
+
+\begin{table}[H]
+  \centering
+  \caption{Stakeholder Register}
+  \begin{tabularx}{\textwidth}{L{3.5cm} L{3cm} X}
+    \toprule
+    \textbf{Stakeholder} & \textbf{Type} & \textbf{Interest / Role} \\
+    \midrule
+    Printing Shop Owners  & Primary / Client   & Main users of the admin panel; benefit from digitalized orders \\
+    Customers             & Primary / Users    & Place and track custom print orders online \\
+    Delivery Partners (RedX, Pathao) & External & Handle physical delivery of completed orders \\
+    CSE495 Course Faculty & Academic Evaluator & Assess project management process and output \\
+    Development Team      & Internal           & Design, build, test, and deploy the platform \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+% ─── 1.2 PESTEL Analysis ─────────────────────────────────────────────────────
+\section{PESTEL Analysis}
+
+A PESTEL analysis identifies the macro-environment factors that affect a local printing business moving to a digital platform.
+
+\begin{table}[H]
+  \centering
+  \caption{PESTEL Analysis for BrandON}
+  \begin{tabularx}{\textwidth}{L{2.2cm} X X}
+    \toprule
+    \textbf{Factor} & \textbf{Key Points} & \textbf{Impact on BrandON} \\
+    \midrule
+    \textbf{Political}
+      & Government promotes digitalization (Digital Bangladesh 2041 initiative); ICT sector policy support.
+      & Favorable regulatory environment; no major political barrier to launching a digital service platform. \\
+    \midrule
+    \textbf{Economic}
+      & Bangladesh's SME sector is growing. Internet economy expanding. Low platform development cost.
+      & Low startup budget (2k--3k BDT) is achievable; local shops have limited tech budgets, so affordable pricing is critical. \\
+    \midrule
+    \textbf{Social}
+      & Increasing smartphone and internet penetration in urban Bangladesh. Younger customers prefer online ordering.
+      & Growing demand for online services; customers expect mobile-friendly UI and fast response. \\
+    \midrule
+    \textbf{Technological}
+      & Open-source stack reduces cost. Docker lowers deployment complexity. Cloud hosting becoming accessible.
+      & Next.js, PostgreSQL, and Docker allow the team to build a production-grade system with minimal cost. \\
+    \midrule
+    \textbf{Environmental}
+      & Digital orders reduce paper-based communication. Less physical shop visits reduce transport emissions.
+      & Platform contributes indirectly to reduced paper waste in order processing. \\
+    \midrule
+    \textbf{Legal}
+      & Data privacy regulations are evolving in Bangladesh. Copyright applies to uploaded design files.
+      & Terms of service must clarify file ownership; basic user data protection must be implemented. \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+% ─── 1.3 Porter's Five Forces ────────────────────────────────────────────────
+\section{Porter's Five Forces}
+
+\begin{table}[H]
+  \centering
+  \caption{Porter's Five Forces Analysis}
+  \begin{tabularx}{\textwidth}{L{3.5cm} C{1.8cm} X}
+    \toprule
+    \textbf{Force} & \textbf{Level} & \textbf{Analysis} \\
+    \midrule
+    \textbf{Threat of New Entrants}
+      & Medium
+      & Building a basic e-commerce-style platform is technically achievable. However, winning the trust of printing shop owners and building a delivery partner network takes time and local relationships. \\
+    \midrule
+    \textbf{Bargaining Power of Suppliers}
+      & Low
+      & Printing shops are the service providers. The platform aggregates them, giving BrandON leverage. Individual shops have limited power when listed alongside competitors. \\
+    \midrule
+    \textbf{Bargaining Power of Buyers}
+      & Medium
+      & Customers can compare prices across shops. The dynamic pricing feature with Bulk discounts and Rush surcharges helps retain customers through transparent, flexible pricing. \\
+    \midrule
+    \textbf{Threat of Substitutes}
+      & High
+      & Customers can still walk into local print shops. Social media pages (Facebook, WhatsApp) also serve as informal order channels. BrandON must offer clear convenience advantages. \\
+    \midrule
+    \textbf{Industry Rivalry}
+      & Low--Medium
+      & Dedicated printing platforms in Bangladesh are limited. The market is fragmented with mostly manual operations. BrandON enters a relatively uncontested digital space for this niche. \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+% ─── 1.4 Business Model Canvas ───────────────────────────────────────────────
+\section{Business Model Canvas}
+
+\begin{table}[H]
+  \centering
+  \caption{Business Model Canvas --- BrandON}
+  \begin{tabularx}{\textwidth}{L{3.2cm} X}
+    \toprule
+    \textbf{Block} & \textbf{Content} \\
+    \midrule
+    \textbf{Key Partners}
+      & \begin{itemize}[noitemsep,topsep=0pt,leftmargin=*]
+          \item RedX and Pathao (delivery logistics)
+          \item Printing shop owners (service providers)
+          \item Cloud infrastructure providers (hosting)
+        \end{itemize} \\
+    \midrule
+    \textbf{Key Activities}
+      & \begin{itemize}[noitemsep,topsep=0pt,leftmargin=*]
+          \item Platform development and maintenance
+          \item Order pipeline management
+          \item Onboarding printing shops
+          \item Customer support
+        \end{itemize} \\
+    \midrule
+    \textbf{Key Resources}
+      & \begin{itemize}[noitemsep,topsep=0pt,leftmargin=*]
+          \item Web platform (Next.js, PostgreSQL, Docker)
+          \item Development team (5 members)
+          \item Delivery partner agreements
+          \item Admin dashboard for shop management
+        \end{itemize} \\
+    \midrule
+    \textbf{Value Propositions}
+      & \begin{itemize}[noitemsep,topsep=0pt,leftmargin=*]
+          \item Customers: Order custom prints online, 24/7, with instant pricing
+          \item Shops: Digitalize operations, reduce walk-in dependency
+          \item Both: Transparent order tracking from placement to delivery
+        \end{itemize} \\
+    \midrule
+    \textbf{Customer Relationships}
+      & \begin{itemize}[noitemsep,topsep=0pt,leftmargin=*]
+          \item Self-service ordering portal
+          \item Status email/notification updates (planned)
+          \item Admin-managed support
+        \end{itemize} \\
+    \midrule
+    \textbf{Channels}
+      & \begin{itemize}[noitemsep,topsep=0pt,leftmargin=*]
+          \item Web application (primary)
+          \item Social media promotion (planned)
+          \item Word-of-mouth from shop owners
+        \end{itemize} \\
+    \midrule
+    \textbf{Customer Segments}
+      & \begin{itemize}[noitemsep,topsep=0pt,leftmargin=*]
+          \item Individual customers needing banners/signboards
+          \item Small businesses ordering in bulk
+          \item Event organizers needing rush delivery
+        \end{itemize} \\
+    \midrule
+    \textbf{Cost Structure}
+      & \begin{itemize}[noitemsep,topsep=0pt,leftmargin=*]
+          \item Platform development: 1,500--2,000 BDT
+          \item Hosting and domain: 300--500 BDT/month
+          \item Maintenance and updates
+          \item Delivery partner fees (transaction-based)
+        \end{itemize} \\
+    \midrule
+    \textbf{Revenue Streams}
+      & \begin{itemize}[noitemsep,topsep=0pt,leftmargin=*]
+          \item Commission per completed order (future)
+          \item Monthly subscription for shops (future)
+          \item Rush surcharge revenue sharing
+        \end{itemize} \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+% ════════════════════════════════════════════════════════════════════════════
+%  CHAPTER 2 — PLANNING
+% ════════════════════════════════════════════════════════════════════════════
+\chapter{Planning}
+
+% ─── 2.1 WBS ─────────────────────────────────────────────────────────────────
+\section{Work Breakdown Structure (WBS)}
+
+The WBS breaks the BrandON project into five top-level deliverable areas. Each is further divided into specific work packages.
+
+\begin{table}[H]
+  \centering
+  \caption{Work Breakdown Structure --- BrandON}
+  \begin{tabularx}{\textwidth}{L{1cm} L{4cm} X}
+    \toprule
+    \textbf{ID} & \textbf{WBS Element} & \textbf{Description / Sub-tasks} \\
+    \midrule
+    1   & \textbf{Project Management} & \\
+    1.1 & \quad Initiating            & Charter, stakeholder identification, PESTEL, Porter's Five Forces \\
+    1.2 & \quad Planning              & WBS, schedule, cost estimate, risk register, product backlog \\
+    1.3 & \quad Monitoring            & Sprint reviews, test reporting, issue tracking \\
+    1.4 & \quad Closing               & Deployment, handover, final report \\
+    \midrule
+    2   & \textbf{System Design}      & \\
+    2.1 & \quad Architecture Design   & App Router structure, RBAC middleware design, DB schema \\
+    2.2 & \quad UI/UX Wireframes      & Page layouts, order flow screens, admin dashboard mockups \\
+    2.3 & \quad Database Design       & Prisma schema: User, Product, Order, OrderItem tables \\
+    \midrule
+    3   & \textbf{Backend Development} & \\
+    3.1 & \quad Authentication         & NextAuth setup, admin\_token cookie, RBAC middleware \\
+    3.2 & \quad Product API            & CRUD endpoints for products and pricing \\
+    3.3 & \quad Order API              & Order creation, pipeline state transitions, server-side price validation \\
+    3.4 & \quad File Upload            & Design file upload handling \\
+    3.5 & \quad Delivery Integration   & RedX and Pathao API integration \\
+    \midrule
+    4   & \textbf{Frontend Development} & \\
+    4.1 & \quad Public Pages            & Home, product listing, product detail pages \\
+    4.2 & \quad Customer Dashboard      & Order placement, order history, status tracking \\
+    4.3 & \quad Admin Dashboard         & Product management, order pipeline management \\
+    4.4 & \quad Responsive Design       & Mobile and tablet layout testing with Tailwind CSS \\
+    \midrule
+    5   & \textbf{Quality Assurance}    & \\
+    5.1 & \quad Unit Testing            & Jest tests for utility functions and pricing logic \\
+    5.2 & \quad Integration Testing     & API endpoint tests with database \\
+    5.3 & \quad System Testing          & End-to-end workflow tests \\
+    5.4 & \quad Regression Testing      & Re-run full test suite after each sprint \\
+    5.5 & \quad Manual Testing          & Mobile responsiveness, UI consistency checks \\
+    \midrule
+    6   & \textbf{Deployment}           & \\
+    6.1 & \quad Docker Configuration    & Dockerfile and Docker Compose setup \\
+    6.2 & \quad Database Migration      & Prisma migrate for production schema \\
+    6.3 & \quad Environment Config      & \texttt{.env} setup for production secrets \\
+    6.4 & \quad Handover                & Documentation, admin credentials, deployment guide \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+% ─── 2.2 Schedule ────────────────────────────────────────────────────────────
+\section{Project Schedule}
+
+The project was planned over approximately 20 weeks, divided into 4 sprints plus initial planning and final closing phases.
+
+\begin{table}[H]
+  \centering
+  \caption{High-Level Project Schedule}
+  \begin{tabularx}{\textwidth}{L{1.5cm} L{3.5cm} L{3cm} X}
+    \toprule
+    \textbf{Phase} & \textbf{Activities} & \textbf{Duration} & \textbf{Milestones} \\
+    \midrule
+    Phase 1 & Initiation \& Planning      & Weeks 1--3  & Charter approved, WBS complete \\
+    Phase 2 & Design \& Setup             & Weeks 4--6  & DB schema finalized, wireframes approved \\
+    Phase 3 & Sprint 1 (Auth + Products)  & Weeks 7--9  & Login, RBAC, product CRUD working \\
+    Phase 4 & Sprint 2 (Orders + Pricing) & Weeks 10--12 & Order pipeline, dynamic pricing live \\
+    Phase 5 & Sprint 3 (Dashboard + UI)   & Weeks 13--15 & Admin and customer dashboards complete \\
+    Phase 6 & Sprint 4 (QA + Delivery)    & Weeks 16--18 & 133 tests passing, delivery integration done \\
+    Phase 7 & Deployment \& Closing       & Weeks 19--20 & Docker deployment, handover complete \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+% ─── 2.3 Cost Estimation ─────────────────────────────────────────────────────
+\section{Cost and Effort Estimation}
+
+\subsection{Budget Breakdown}
+
+\begin{table}[H]
+  \centering
+  \caption{Project Cost Estimation (MVP)}
+  \begin{tabularx}{\textwidth}{L{5cm} R{2.5cm} R{2.5cm} X}
+    \toprule
+    \textbf{Cost Item} & \textbf{Min (BDT)} & \textbf{Max (BDT)} & \textbf{Notes} \\
+    \midrule
+    Domain Registration (1 year) & 800  & 1,200  & \texttt{.com} or \texttt{.com.bd} \\
+    VPS / Cloud Hosting (3 months)& 500  & 700    & Basic tier, enough for MVP traffic \\
+    PostgreSQL Managed DB         & 0    & 300    & Self-hosted via Docker (cost: 0) or managed \\
+    SSL Certificate               & 0    & 200    & Let's Encrypt is free \\
+    Storage (file uploads)        & 200  & 400    & Object storage for design files \\
+    Miscellaneous Tools           & 100  & 200    & Development tools, testing licenses \\
+    \midrule
+    \textbf{Total}                & \textbf{1,600} & \textbf{3,000} & Within budget range \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\textit{Note: The team used free and open-source tools exclusively. No commercial licenses were purchased. Development labor cost is treated as zero (academic project).}
+
+\subsection{Software Size Estimation}
+
+Software size was estimated using two standard methods: Lines of Code (LOC) counting and Function Point (FP) analysis.
+
+\begin{table}[H]
+  \centering
+  \caption{Software Size Metrics}
+  \begin{tabular}{ll}
+    \toprule
+    \textbf{Metric} & \textbf{Value} \\
+    \midrule
+    Estimated Lines of Code (LOC) & 3,020 (3.02 KLOC) \\
+    Function Points (FP)          & 106 \\
+    Average LOC per FP            & $\approx 28.49$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection{COCOMO Effort and Duration Estimate}
+
+The project was classified as an \textbf{Organic} type under the COCOMO I model --- a small team with a well-understood application domain.
+
+The COCOMO Organic model equations are:
+
+\begin{align}
+  E  &= a \times (\text{KLOC})^b = 2.4 \times (3.02)^{1.05} \approx \mathbf{7.73} \text{ person-months} \\
+  D  &= c \times E^d = 2.5 \times (7.73)^{0.38} \approx \mathbf{5.6} \text{ months} \\
+  P  &= E / D = 7.73 / 5.6 \approx \mathbf{1.38} \text{ persons (average staffing)}
+\end{align}
+
+Where for Organic mode: $a = 2.4$, $b = 1.05$, $c = 2.5$, $d = 0.38$.
+
+\begin{table}[H]
+  \centering
+  \caption{COCOMO Estimation Summary}
+  \begin{tabular}{lll}
+    \toprule
+    \textbf{Parameter} & \textbf{Formula / Values} & \textbf{Result} \\
+    \midrule
+    Project Size        & 3,020 lines of code         & 3.02 KLOC \\
+    Function Points     & Counted from features       & 106 FP \\
+    COCOMO Type         & Organic (small team)        & --- \\
+    Effort ($E$)        & $2.4 \times 3.02^{1.05}$   & 7.73 person-months \\
+    Duration ($D$)      & $2.5 \times 7.73^{0.38}$   & 5.6 months \\
+    Avg. Team Size ($P$)& $E / D$                    & $\approx$ 1.38 persons \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+The estimated 5.6-month duration aligns well with the actual project timeline of approximately 20 weeks ($\approx$ 5 months), confirming that the COCOMO estimate was accurate for this project scope.
+
+% ─── 2.4 Product Backlog ─────────────────────────────────────────────────────
+\section{Product Backlog}
+
+\begin{longtable}{R{0.6cm} L{4.5cm} L{2cm} R{1.8cm} L{4cm}}
+  \caption{Product Backlog --- BrandON} \\
+  \toprule
+  \textbf{ID} & \textbf{User Story} & \textbf{Priority} & \textbf{Est. (hrs)} & \textbf{Acceptance Criteria} \\
+  \midrule
+  \endfirsthead
+  \toprule
+  \textbf{ID} & \textbf{User Story} & \textbf{Priority} & \textbf{Est. (hrs)} & \textbf{Acceptance Criteria} \\
+  \midrule
+  \endhead
+  \bottomrule
+  \endfoot
+  PB-01 & As a customer, I can register and log in securely.           & Critical & 8  & Auth works; invalid credentials rejected \\
+  PB-02 & As an admin, I have a separate protected admin panel.        & Critical & 6  & Admin cookie enforced via middleware \\
+  PB-03 & As a customer, I can browse the product catalog.            & High     & 5  & Products listed with images and base price \\
+  PB-04 & As a customer, I can configure custom size and quantity.     & Critical & 10 & Price updates dynamically based on input \\
+  PB-05 & As a customer, I get Bulk pricing for qty $\geq$ 5.        & High     & 4  & 10\% discount applies automatically \\
+  PB-06 & As a customer, I can select Rush delivery with +25\% surcharge. & High & 4  & Surcharge shown clearly before checkout \\
+  PB-07 & As a customer, I can upload design files with my order.      & High     & 8  & Files accepted; stored securely \\
+  PB-08 & As a customer, I can track my order status.                  & High     & 6  & Status shows: PENDING/CONFIRMED/IN\_PROGRESS/COMPLETED \\
+  PB-09 & As an admin, I can manage products and pricing.             & Critical & 10 & CRUD operations work on products \\
+  PB-10 & As an admin, I can update order statuses.                   & Critical & 8  & Pipeline transitions enforced server-side \\
+  PB-11 & As an admin, I can assign orders to agents.                 & Medium   & 6  & Agent role can view and update assigned orders \\
+  PB-12 & Server recalculates price to block client-side tampering.   & Critical & 5  & Tampered price in request is ignored \\
+  PB-13 & Integration with RedX / Pathao for delivery.                & Medium   & 8  & Delivery tracking info attached to order \\
+  PB-14 & Platform is fully mobile responsive.                        & High     & 6  & All pages pass responsive tests on mobile breakpoints \\
+  PB-15 & Jest unit and integration tests for all core modules.        & High     & 12 & 133 tests pass; 0 failures \\
+  PB-16 & Docker Compose setup for development and production.        & High     & 6  & One command spins up full environment \\
+\end{longtable}
+
+% ─── 2.5 Sprint Backlog ──────────────────────────────────────────────────────
+\section{Sprint Backlog}
+
+The product backlog was distributed across four sprints of approximately two to three weeks each.
+
+\begin{table}[H]
+  \centering
+  \caption{Sprint 1 --- Foundation and Authentication (Weeks 7--9)}
+  \begin{tabularx}{\textwidth}{L{1cm} X L{2.5cm} R{2cm}}
+    \toprule
+    \textbf{ID} & \textbf{Task} & \textbf{Assignee} & \textbf{Est. (hrs)} \\
+    \midrule
+    PB-01 & Customer registration and login (NextAuth)           & Mahir, Maharaj & 8  \\
+    PB-02 & Admin panel protected via \texttt{admin\_token} cookie middleware & Mahir       & 6  \\
+    PB-09 & Product CRUD API and admin product management UI     & Maharaj, Oishi & 10 \\
+    PB-03 & Customer-facing product catalog page                 & Oishi          & 5  \\
+    ---   & Prisma DB schema design and initial migration         & Mahir, Hamim   & 6  \\
+    ---   & Docker development environment setup                 & Mahir          & 4  \\
+    \midrule
+    \multicolumn{3}{r}{\textbf{Sprint 1 Total}} & \textbf{39 hrs} \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\begin{table}[H]
+  \centering
+  \caption{Sprint 2 --- Orders, Pricing, and Security (Weeks 10--12)}
+  \begin{tabularx}{\textwidth}{L{1cm} X L{2.5cm} R{2cm}}
+    \toprule
+    \textbf{ID} & \textbf{Task} & \textbf{Assignee} & \textbf{Est. (hrs)} \\
+    \midrule
+    PB-04 & Custom size and quantity configuration with live price preview & Mahir, Oishi & 10 \\
+    PB-05 & Bulk pricing strategy (10\% off for qty $\geq$ 5)           & Maharaj      & 4  \\
+    PB-06 & Rush pricing strategy (+25\% surcharge)                     & Maharaj      & 4  \\
+    PB-07 & Design file upload functionality                            & Mahim        & 8  \\
+    PB-12 & Server-side price recalculation to block tampering          & Mahir        & 5  \\
+    PB-10 & Order state pipeline (PENDING $\to$ COMPLETED)              & Mahir, Maharaj & 8 \\
+    \midrule
+    \multicolumn{3}{r}{\textbf{Sprint 2 Total}} & \textbf{39 hrs} \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\begin{table}[H]
+  \centering
+  \caption{Sprint 3 --- Dashboards, Agent Role, and Delivery (Weeks 13--15)}
+  \begin{tabularx}{\textwidth}{L{1cm} X L{2.5cm} R{2cm}}
+    \toprule
+    \textbf{ID} & \textbf{Task} & \textbf{Assignee} & \textbf{Est. (hrs)} \\
+    \midrule
+    PB-08 & Customer order tracking dashboard                   & Oishi, Israt   & 6  \\
+    PB-11 & Agent role: view and update assigned orders         & Maharaj, Israt & 6  \\
+    PB-13 & RedX and Pathao delivery integration                & Mahim, Maharaj & 8  \\
+    PB-14 & Mobile responsive layout for all pages              & Oishi, Israt   & 6  \\
+    ---   & UI polish: Tailwind styling for all dashboards       & Israt          & 5  \\
+    \midrule
+    \multicolumn{3}{r}{\textbf{Sprint 3 Total}} & \textbf{31 hrs} \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\begin{table}[H]
+  \centering
+  \caption{Sprint 4 --- Testing, QA, and Deployment (Weeks 16--18)}
+  \begin{tabularx}{\textwidth}{L{1cm} X L{2.5cm} R{2cm}}
+    \toprule
+    \textbf{ID} & \textbf{Task} & \textbf{Assignee} & \textbf{Est. (hrs)} \\
+    \midrule
+    PB-15 & Write and run 133 Jest tests (Unit, Integration, System, Regression) & Hamim, Mahir & 12 \\
+    PB-16 & Docker Compose production configuration                & Mahir          & 6  \\
+    ---   & Bug fixes identified in system testing                 & All            & 8  \\
+    ---   & Regression test run after all fixes                    & Hamim          & 4  \\
+    ---   & Final documentation and handover package               & Israt          & 6  \\
+    \midrule
+    \multicolumn{3}{r}{\textbf{Sprint 4 Total}} & \textbf{36 hrs} \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+% ─── 2.6 Risk Register ───────────────────────────────────────────────────────
+\section{Risk Register}
+
+\begin{table}[H]
+  \centering
+  \caption{Project Risk Register}
+  \begin{tabularx}{\textwidth}{L{3.5cm} C{1.5cm} C{1.5cm} X}
+    \toprule
+    \textbf{Risk} & \textbf{Prob.} & \textbf{Impact} & \textbf{Mitigation} \\
+    \midrule
+    Team member unfamiliar with Next.js App Router & High & High & Dedicated learning week; pair programming; online docs \\
+    Database connection exhaustion in development & Medium & High & Singleton pattern for Prisma client to prevent connection leaks \\
+    Client-side price manipulation by users & High & High & Server-side price recalculation on every order submission \\
+    Budget overrun & Low & Medium & Use open-source tools; Docker for free self-hosting \\
+    Delivery API breaking changes & Medium & Medium & Abstract delivery layer; easy to swap providers \\
+    Scope creep (adding post-MVP features) & Medium & Medium & Strict MVP scope definition; deferred features documented \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+% ════════════════════════════════════════════════════════════════════════════
+%  CHAPTER 3 — EXECUTING
+% ════════════════════════════════════════════════════════════════════════════
+\chapter{Executing}
+
+\section{Development Strategy}
+
+The team followed an \textbf{Agile Scrum} approach with four sprints, biweekly standups, and a shared Git repository for version control. All five members contributed to both technical and non-technical deliverables.
+
+\subsection{Technology Decisions}
+
+\begin{table}[H]
+  \centering
+  \caption{Technology Stack and Rationale}
+  \begin{tabularx}{\textwidth}{L{3cm} L{3cm} X}
+    \toprule
+    \textbf{Technology} & \textbf{Version} & \textbf{Reason} \\
+    \midrule
+    Next.js             & 14 (App Router) & Full-stack React framework with API routes; replaces separate backend \\
+    TypeScript          & 5.x             & Type safety reduces runtime errors; better IDE support \\
+    Tailwind CSS        & 3.x             & Utility-first CSS; fast UI iteration without writing custom stylesheets \\
+    Prisma ORM          & 5.x             & Type-safe DB access; auto-generates TypeScript types from schema \\
+    PostgreSQL          & 15              & Reliable relational DB; handles RBAC and order data well \\
+    Docker              & 24.x            & Reproducible environments; same setup for dev, test, and production \\
+    Jest                & 29.x            & Industry-standard testing framework for TypeScript/Node.js \\
+    NextAuth.js         & 4.x             & Auth solution built for Next.js; handles sessions and providers \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\subsection{Team Roles and Work Distribution}
+
+\begin{table}[H]
+  \centering
+  \caption{Team Member Contributions}
+  \begin{tabularx}{\textwidth}{L{3.5cm} L{3cm} X}
+    \toprule
+    \textbf{Member} & \textbf{Primary Role} & \textbf{Key Contributions} \\
+    \midrule
+    Mahir Faysal Haque Dipto
+      & Lead Dev / PM
+      & Architecture, Auth system, RBAC middleware, order API, Docker setup, sprint planning \\
+    Mahamudur Rahaman Maharaj
+      & Backend Developer
+      & Pricing strategy implementation, product API, order pipeline state machine, delivery integration \\
+    Nusrat Jahan Oishi
+      & Frontend Developer
+      & Customer-facing pages, order placement UI, live price preview, Tailwind styling \\
+    Mahamudul Hasan Hamim
+      & QA / Tester
+      & Jest test suite (133 tests), file upload testing, regression testing after each sprint \\
+    Israt Jahan Sarker
+      & UI/UX / Docs
+      & Wireframes, admin and agent dashboards, mobile responsiveness, project documentation \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\subsection{Handling the Learning Curve}
+
+Two members had limited prior experience with Next.js 14's App Router (introduced in Next.js 13+) and Docker. The team addressed this with:
+
+\begin{itemize}
+  \item \textbf{Week 1--2 exploration:} Mahir built a minimal proof-of-concept covering routing, server components, and API routes before the full team began coding.
+  \item \textbf{Pair programming:} Oishi (frontend) worked alongside Mahir during the first sprint to understand the App Router structure.
+  \item \textbf{Docker-first setup:} Mahir created the \texttt{docker-compose.yml} and \texttt{Dockerfile} early, so all team members ran the same PostgreSQL instance locally from day one, eliminating ``works on my machine'' issues.
+  \item \textbf{Shared documentation:} The team maintained a short internal wiki of commands, environment variables, and Prisma migration steps.
+\end{itemize}
+
+\section{Design Patterns in Execution}
+
+Two software design patterns were deliberately applied during development to solve specific technical problems.
+
+\subsection{Singleton Pattern --- Prisma Client}
+
+\textbf{Problem:} Next.js in development mode uses \textit{hot module reloading} (HMR). Every time a file changes, Node.js re-evaluates modules. Without control, this creates a new \texttt{PrismaClient} instance on each reload, which opens a new database connection. PostgreSQL has a limited connection pool. After enough reloads, the pool exhausts and the server crashes.
+
+\textbf{Solution:} The Singleton pattern ensures only one \texttt{PrismaClient} instance exists per process.
+
+\begin{verbatim}
+// lib/prisma.ts
+import { PrismaClient } from '@prisma/client';
+
+const globalForPrisma = globalThis as unknown as {
+  prisma: PrismaClient | undefined;
+};
+
+export const prisma =
+  globalForPrisma.prisma ?? new PrismaClient();
+
+if (process.env.NODE_ENV !== 'production') {
+  globalForPrisma.prisma = prisma;
+}
+\end{verbatim}
+
+By attaching the client to \texttt{globalThis}, the instance persists across HMR cycles in development. In production, the module is only evaluated once, so the guard has no effect. This pattern directly prevented database connection exhaustion during the development phase.
+
+\subsection{Strategy Pattern --- Pricing Engine}
+
+\textbf{Problem:} The platform requires three different pricing calculations depending on context: standard single-item pricing, bulk order discounts, and rush delivery surcharges. Embedding all three as nested conditionals in the order handler would make the code hard to extend and test.
+
+\textbf{Solution:} The Strategy pattern separates each pricing algorithm behind a common interface.
+
+\begin{verbatim}
+interface PricingStrategy {
+  calculate(basePrice: number, quantity: number): number;
+}
+
+class StandardPricing implements PricingStrategy {
+  calculate(basePrice: number, quantity: number): number {
+    return basePrice * quantity;
+  }
+}
+
+class BulkPricing implements PricingStrategy {
+  // 10% discount for quantity >= 5
+  calculate(basePrice: number, quantity: number): number {
+    const discount = quantity >= 5 ? 0.90 : 1.0;
+    return basePrice * quantity * discount;
+  }
+}
+
+class RushPricing implements PricingStrategy {
+  // +25% surcharge for rush orders
+  calculate(basePrice: number, quantity: number): number {
+    return basePrice * quantity * 1.25;
+  }
+}
+
+class PricingContext {
+  constructor(private strategy: PricingStrategy) {}
+  getPrice(basePrice: number, quantity: number): number {
+    return this.strategy.calculate(basePrice, quantity);
+  }
+}
+\end{verbatim}
+
+The server selects the appropriate strategy at order submission time based on order type. This design also makes unit testing straightforward: each strategy is tested independently, and the Bulk and Rush strategies each have dedicated test cases in the Jest suite.
+
+\section{Security Implementation}
+
+\subsection{Role-Based Access Control (RBAC)}
+
+RBAC is enforced through a single \texttt{admin\_token} cookie checked in Next.js middleware (\texttt{middleware.ts}). The middleware intercepts all requests to protected routes before they reach any page or API handler.
+
+\begin{itemize}
+  \item \textbf{Public routes} (\texttt{/}, \texttt{/products}): Accessible by all users.
+  \item \textbf{Customer routes} (\texttt{/dashboard/\ldots}): Require valid NextAuth session.
+  \item \textbf{Admin routes} (\texttt{/admin/\ldots}): Require both a valid session and the \texttt{admin\_token} cookie.
+  \item \textbf{Agent routes} (\texttt{/agent/\ldots}): Require session with AGENT role.
+\end{itemize}
+
+Centralizing this logic in middleware means no individual page or API route needs to repeat the access check.
+
+\subsection{Server-Side Price Validation}
+
+Client-side price displays are for informational purposes only. When an order is submitted, the server ignores the price sent in the request body and recalculates it independently using the same Strategy pattern:
+
+\begin{enumerate}
+  \item Fetch current product price from the database.
+  \item Identify order type (Standard, Bulk, or Rush) from the order parameters.
+  \item Apply the correct pricing strategy server-side.
+  \item Store only the server-calculated price in the order record.
+\end{enumerate}
+
+This blocks any attempt to manipulate the price by modifying the HTTP request.
+
+\section{Order Pipeline Implementation}
+
+Orders follow a strict four-state pipeline. Transitions are validated server-side to prevent invalid state jumps.
+
+\begin{center}
+\begin{tikzpicture}[node distance=2.8cm, auto]
+  \tikzstyle{state} = [rectangle, rounded corners, minimum width=2.5cm, minimum height=0.8cm,
+    text centered, draw=primaryblue, fill=lightgray, font=\small\ttfamily]
+  \tikzstyle{arrow} = [thick,->,>=stealth,color=darkgray]
+
+  \node (p)  [state]                    {PENDING};
+  \node (c)  [state, right of=p]        {CONFIRMED};
+  \node (ip) [state, right of=c]        {IN\_PROGRESS};
+  \node (done) [state, right of=ip]     {COMPLETED};
+
+  \draw [arrow] (p)    -- (c);
+  \draw [arrow] (c)    -- (ip);
+  \draw [arrow] (ip)   -- (done);
+\end{tikzpicture}
+\end{center}
+
+\begin{itemize}
+  \item \textbf{PENDING:} Order placed by customer; awaiting admin review.
+  \item \textbf{CONFIRMED:} Admin reviews and accepts the order.
+  \item \textbf{IN\_PROGRESS:} Printing and production has started.
+  \item \textbf{COMPLETED:} Order dispatched to delivery partner (RedX or Pathao).
+\end{itemize}
+
+The API rejects any request that attempts to skip a state or move backwards.
+
+% ════════════════════════════════════════════════════════════════════════════
+%  CHAPTER 4 — MONITORING AND CONTROLLING
+% ════════════════════════════════════════════════════════════════════════════
+\chapter{Monitoring and Controlling}
+
+\section{Progress Tracking}
+
+The team used the following mechanisms to track progress throughout the project:
+
+\begin{itemize}
+  \item \textbf{Sprint Reviews (biweekly):} At the end of each sprint, the team demonstrated working features. Incomplete items were moved to the next sprint backlog.
+  \item \textbf{Git Commit History:} All changes were tracked via Git. Commit messages followed a consistent format, making it easy to trace when each feature was completed.
+  \item \textbf{Issue Tracking:} Bugs and new tasks were logged as GitHub Issues and closed when resolved.
+  \item \textbf{Burndown Tracking:} The team estimated hours per sprint and tracked remaining work at weekly checkpoints.
+\end{itemize}
+
+\section{Quality Control}
+
+\subsection{Automated Test Suite}
+
+The most important quality control measure was the project's comprehensive Jest testing architecture. Tests were organized into four levels:
+
+\begin{table}[H]
+  \centering
+  \caption{Jest Test Suite Summary}
+  \begin{tabularx}{\textwidth}{L{3cm} X R{2cm}}
+    \toprule
+    \textbf{Test Level} & \textbf{What is Tested} & \textbf{Test Count} \\
+    \midrule
+    Unit Tests
+      & Individual functions in isolation: pricing strategies (Standard, Bulk, Rush), utility helpers, input validators.
+      & $\approx$ 45 \\
+    Integration Tests
+      & API endpoints with a real test database: product CRUD, order creation, authentication flows.
+      & $\approx$ 40 \\
+    System Tests
+      & Full end-to-end workflows: place order $\to$ confirm $\to$ complete; admin login and product management.
+      & $\approx$ 30 \\
+    Regression Tests
+      & Re-run of the full test suite after each sprint to catch newly introduced regressions.
+      & $\approx$ 18 \\
+    \midrule
+    \textbf{Total} & \textbf{All tests passing; 0 failures} & \textbf{133} \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\textbf{Test Execution Time:} The full suite of 133 tests completes in \textbf{2.381 seconds}, which allowed the team to run tests frequently without slowing down the development cycle.
+
+The Singleton pattern for the Prisma client was especially important for integration tests: without it, running dozens of tests in parallel would exhaust the database connection pool.
+
+\subsection{Order Pipeline Enforcement}
+
+Quality control extended to the order management logic:
+
+\begin{itemize}
+  \item State transitions are validated server-side. An admin cannot skip CONFIRMED and jump to COMPLETED.
+  \item The API returns a \texttt{400 Bad Request} with a clear error message if an invalid transition is attempted.
+  \item Integration tests cover all valid transitions and all invalid transition attempts to confirm rejection.
+\end{itemize}
+
+\subsection{Server-Side Price Validation}
+
+As described in the Executing chapter, the server always recalculates the order price independently. This was tested by:
+
+\begin{itemize}
+  \item Sending order requests with deliberately tampered prices and verifying the stored price matches the server calculation, not the submitted price.
+  \item Testing all three pricing strategies (Standard, Bulk, Rush) with boundary values (e.g., quantity = 4 vs. 5 for Bulk threshold).
+\end{itemize}
+
+\subsection{Mobile Responsiveness}
+
+All customer-facing and dashboard pages were tested for responsiveness at three breakpoints:
+\begin{itemize}
+  \item Mobile: 375px (iPhone SE viewport)
+  \item Tablet: 768px (iPad viewport)
+  \item Desktop: 1280px (standard laptop)
+\end{itemize}
+
+Tailwind CSS utility classes (\texttt{sm:}, \texttt{md:}, \texttt{lg:} prefixes) were used to handle layout changes across breakpoints. Pages that failed visual inspection were flagged as bugs and fixed before sprint close.
+
+\section{Change Control}
+
+During the project, one significant scope change was requested: adding a real-time delivery tracking map. This was evaluated against the budget and timeline and deferred to post-MVP. The change was logged, discussed with the team, and formally documented as out of scope.
+
+\section{Performance Metrics Summary}
+
+\begin{table}[H]
+  \centering
+  \caption{Key Quality and Performance Metrics at Project Close}
+  \begin{tabularx}{\textwidth}{L{5cm} X}
+    \toprule
+    \textbf{Metric} & \textbf{Value / Status} \\
+    \midrule
+    Total automated tests        & 133 \\
+    Test failures                & 0 \\
+    Full test suite runtime      & 2.381 seconds \\
+    Test coverage areas          & Pricing, Auth, Orders, Products, Pipeline \\
+    Order pipeline states        & 4 (PENDING, CONFIRMED, IN\_PROGRESS, COMPLETED) \\
+    Price tampering prevention   & Enforced via server-side recalculation \\
+    RBAC enforcement point       & Single \texttt{middleware.ts} file \\
+    Mobile responsiveness        & Verified at 375px, 768px, 1280px \\
+    Budget status                & Within 2,000--3,000 BDT range \\
+    COCOMO estimated duration    & 5.6 months \\
+    Actual delivery duration     & $\approx$ 5 months \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+% ════════════════════════════════════════════════════════════════════════════
+%  CHAPTER 5 — CLOSING
+% ════════════════════════════════════════════════════════════════════════════
+\chapter{Closing}
+
+\section{Final Deployment}
+
+The production deployment uses Docker Compose to orchestrate two services: the Next.js application and the PostgreSQL 15 database. A single command brings up the entire stack.
+
+\begin{verbatim}
+version: "3.8"
+services:
+  web:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - DATABASE_URL=postgresql://user:pass@db:5432/brandon
+      - NEXTAUTH_SECRET=${NEXTAUTH_SECRET}
+      - NEXTAUTH_URL=${NEXTAUTH_URL}
+    depends_on:
+      - db
+
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
+      POSTGRES_DB: brandon
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
+\end{verbatim}
+
+Deployment steps:
+\begin{enumerate}
+  \item Copy \texttt{.env} file with production secrets (database URL, NextAuth secret, delivery API keys).
+  \item Run \texttt{docker compose up -d} to start services in the background.
+  \item Run \texttt{npx prisma migrate deploy} to apply database schema migrations.
+  \item Run \texttt{npx prisma db seed} to populate initial product and admin data.
+  \item Verify at \texttt{http://localhost:3000} (or the production domain).
+\end{enumerate}
+
+\section{Handover Plan}
+
+The following items were prepared for handover to the client (printing shop owner / operator):
+
+\begin{table}[H]
+  \centering
+  \caption{Handover Checklist}
+  \begin{tabularx}{\textwidth}{L{5cm} C{2cm} X}
+    \toprule
+    \textbf{Item} & \textbf{Status} & \textbf{Notes} \\
+    \midrule
+    Source code repository (Git)            & Done & Full history; README included \\
+    Admin credentials                       & Done & Delivered securely out-of-band \\
+    Deployment guide (step-by-step)         & Done & Covers Docker setup and migrations \\
+    \texttt{.env} template                  & Done & All required variables documented \\
+    User manual (admin panel walkthrough)   & Done & Screenshots for each admin function \\
+    Delivery partner API keys setup guide   & Done & RedX and Pathao configuration steps \\
+    Test suite documentation                & Done & How to run Jest tests; what they cover \\
+    Post-MVP feature list                   & Done & Documented deferred features for future dev \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\textbf{Training:} A one-hour walkthrough session was conducted with the shop owner covering: adding products, managing pricing, processing orders through the pipeline, and viewing completed orders.
+
+\section{Lessons Learned}
+
+\begin{itemize}
+  \item \textbf{Early Docker adoption paid off:} Setting up Docker in week one eliminated environment inconsistencies for the entire project. Time invested upfront saved significant debugging time later.
+
+  \item \textbf{Design patterns solve real problems:} The Singleton pattern was not added for architectural elegance. It directly fixed a PostgreSQL connection exhaustion issue discovered during Sprint 1 development. Identifying the root cause and applying the right pattern was more effective than workarounds.
+
+  \item \textbf{Server-side validation is not optional:} Prototyping with client-only price calculations revealed how easily they could be bypassed. Building server-side recalculation early prevented a security gap from reaching production.
+
+  \item \textbf{Tests catch regressions before the user does:} Sprint 4 regression testing caught two pricing-related bugs introduced in Sprint 3 code changes. Without the test suite, these would have reached the client.
+
+  \item \textbf{Scope control protects delivery:} Deferring the real-time delivery map and other post-MVP features kept the team focused. The MVP was delivered on time and within budget as a result.
+\end{itemize}
+
+\section{Final Project Summary}
+
+\begin{table}[H]
+  \centering
+  \caption{Final Project Summary}
+  \begin{tabularx}{\textwidth}{L{4cm} X}
+    \toprule
+    \textbf{Item} & \textbf{Summary} \\
+    \midrule
+    Project Name          & BrandON --- Digital Advertising Agency Platform \\
+    Objective             & Digitalize custom print order management for local shops \\
+    Team Size             & 5 members \\
+    Duration              & $\approx$ 5 months (COCOMO estimate: 5.6 months) \\
+    Total Effort          & 7.73 person-months (COCOMO estimate) \\
+    Codebase Size         & 3.02 KLOC / 106 Function Points \\
+    Budget Used           & Within 2,000--3,000 BDT \\
+    Tests Passed          & 133 / 133 in 2.381 seconds \\
+    Design Patterns Used  & Singleton (Prisma), Strategy (Pricing) \\
+    RBAC Mechanism        & \texttt{admin\_token} cookie, Next.js middleware \\
+    Order Pipeline        & PENDING $\to$ CONFIRMED $\to$ IN\_PROGRESS $\to$ COMPLETED \\
+    Delivery Partners     & RedX, Pathao \\
+    Deployment            & Docker Compose \\
+    MVP Outcome           & Delivered; all critical features functional \\
+    Post-MVP Items        & Real-time tracking, payment gateway, mobile app \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+BrandON met its core objectives. The platform delivers a working digital order system for local printing shops, with enforced pricing logic, a secure role-based access model, and a tested order pipeline. The project was completed on time and within budget, using only free and open-source tools.
+
+% ════════════════════════════════════════════════════════════════════════════
+%  APPENDIX
+% ════════════════════════════════════════════════════════════════════════════
+\appendix
+\chapter{Project Glossary}
+
+\begin{table}[H]
+  \centering
+  \begin{tabularx}{\textwidth}{L{3cm} X}
+    \toprule
+    \textbf{Term} & \textbf{Definition} \\
+    \midrule
+    App Router       & Next.js 13+ routing system based on the \texttt{app/} directory \\
+    COCOMO           & Constructive Cost Model; estimates software effort from LOC \\
+    Docker Compose   & Tool to define and run multi-container Docker applications \\
+    FP               & Function Points; a measure of software functionality \\
+    HMR              & Hot Module Reloading; Next.js dev mode auto-reload on file change \\
+    KLOC             & Kilo Lines of Code (1,000 lines) \\
+    MVP              & Minimum Viable Product \\
+    NextAuth         & Authentication library built for Next.js \\
+    ORM              & Object-Relational Mapper; maps code objects to DB tables \\
+    Prisma           & TypeScript ORM for Node.js and PostgreSQL \\
+    RBAC             & Role-Based Access Control \\
+    Singleton        & Design pattern ensuring only one instance of a class exists \\
+    Strategy Pattern & Design pattern that selects an algorithm at runtime \\
+    WBS              & Work Breakdown Structure \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\chapter{COCOMO Calculation Detail}
+
+\textbf{Model type:} Organic (small team, well-understood domain)
+
+\textbf{COCOMO I Organic mode constants:}
+\begin{align*}
+  a &= 2.4 \\
+  b &= 1.05 \\
+  c &= 2.5 \\
+  d &= 0.38
+\end{align*}
+
+\textbf{Project size:} 3,020 lines of code = 3.02 KLOC
+
+\textbf{Effort:}
+\[
+  E = 2.4 \times (3.02)^{1.05}
+    = 2.4 \times 3.221
+    \approx \mathbf{7.73} \text{ person-months}
+\]
+
+\textbf{Duration:}
+\[
+  D = 2.5 \times (7.73)^{0.38}
+    = 2.5 \times 2.241
+    \approx \mathbf{5.6} \text{ months}
+\]
+
+\textbf{Average staffing:}
+\[
+  P = \frac{E}{D} = \frac{7.73}{5.6} \approx \mathbf{1.38} \text{ persons}
+\]
+
+The project was staffed with 5 team members, which is higher than the COCOMO average. This excess staffing enabled parallel work on frontend, backend, QA, and documentation, contributing to on-time delivery within the 5.6-month estimate.
+
+\end{document}
