@@ -1,0 +1,49 @@
+\contentsline {chapter}{Executive Summary}{3}{chapter*.2}%
+\contentsline {chapter}{\numberline {1}Initiating}{4}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Project Charter}{4}{section.1.1}%
+\contentsline {subsection}{\numberline {1.1.1}Project Overview}{4}{subsection.1.1.1}%
+\contentsline {subsection}{\numberline {1.1.2}Objective}{4}{subsection.1.1.2}%
+\contentsline {subsection}{\numberline {1.1.3}Project Scope}{5}{subsection.1.1.3}%
+\contentsline {subsection}{\numberline {1.1.4}Stakeholders}{5}{subsection.1.1.4}%
+\contentsline {section}{\numberline {1.2}PESTEL Analysis}{6}{section.1.2}%
+\contentsline {section}{\numberline {1.3}Porter's Five Forces}{7}{section.1.3}%
+\contentsline {section}{\numberline {1.4}Business Model Canvas}{7}{section.1.4}%
+\contentsline {chapter}{\numberline {2}Planning}{9}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Work Breakdown Structure (WBS)}{9}{section.2.1}%
+\contentsline {section}{\numberline {2.2}Project Schedule}{10}{section.2.2}%
+\contentsline {section}{\numberline {2.3}Cost and Effort Estimation}{11}{section.2.3}%
+\contentsline {subsection}{\numberline {2.3.1}Budget Breakdown}{12}{subsection.2.3.1}%
+\contentsline {subsection}{\numberline {2.3.2}Software Size Estimation}{12}{subsection.2.3.2}%
+\contentsline {subsection}{\numberline {2.3.3}COCOMO Effort and Duration Estimate}{13}{subsection.2.3.3}%
+\contentsline {section}{\numberline {2.4}Product Backlog}{13}{section.2.4}%
+\contentsline {section}{\numberline {2.5}Sprint Backlog}{15}{section.2.5}%
+\contentsline {section}{\numberline {2.6}Risk Register}{17}{section.2.6}%
+\contentsline {chapter}{\numberline {3}Executing}{18}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Development Strategy}{18}{section.3.1}%
+\contentsline {subsection}{\numberline {3.1.1}Technology Decisions}{18}{subsection.3.1.1}%
+\contentsline {subsection}{\numberline {3.1.2}Team Roles and Work Distribution}{19}{subsection.3.1.2}%
+\contentsline {subsection}{\numberline {3.1.3}Handling the Learning Curve}{19}{subsection.3.1.3}%
+\contentsline {section}{\numberline {3.2}Design Patterns in Execution}{19}{section.3.2}%
+\contentsline {subsection}{\numberline {3.2.1}Singleton Pattern: Prisma Client}{20}{subsection.3.2.1}%
+\contentsline {subsection}{\numberline {3.2.2}Strategy Pattern: Pricing Engine}{20}{subsection.3.2.2}%
+\contentsline {section}{\numberline {3.3}Security Implementation}{21}{section.3.3}%
+\contentsline {subsection}{\numberline {3.3.1}Role-Based Access Control (RBAC)}{21}{subsection.3.3.1}%
+\contentsline {subsection}{\numberline {3.3.2}Server-Side Price Validation}{22}{subsection.3.3.2}%
+\contentsline {section}{\numberline {3.4}Order Pipeline Implementation}{22}{section.3.4}%
+\contentsline {chapter}{\numberline {4}Monitoring and Controlling}{23}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Progress Tracking}{23}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Quality Control}{23}{section.4.2}%
+\contentsline {subsection}{\numberline {4.2.1}Automated Test Suite}{23}{subsection.4.2.1}%
+\contentsline {subsection}{\numberline {4.2.2}Order Pipeline Enforcement}{24}{subsection.4.2.2}%
+\contentsline {subsection}{\numberline {4.2.3}Server-Side Price Validation}{24}{subsection.4.2.3}%
+\contentsline {subsection}{\numberline {4.2.4}Mobile Responsiveness}{25}{subsection.4.2.4}%
+\contentsline {section}{\numberline {4.3}Change Control}{25}{section.4.3}%
+\contentsline {section}{\numberline {4.4}Performance Metrics Summary}{26}{section.4.4}%
+\contentsline {chapter}{\numberline {5}Closing}{27}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Final Deployment}{27}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Handover Plan}{28}{section.5.2}%
+\contentsline {section}{\numberline {5.3}Lessons Learned}{28}{section.5.3}%
+\contentsline {section}{\numberline {5.4}Final Project Summary}{29}{section.5.4}%
+\contentsline {chapter}{\numberline {A}Project Glossary}{31}{appendix.A}%
+\contentsline {chapter}{\numberline {B}COCOMO Calculation Detail}{32}{appendix.B}%
+\contentsfinish 
